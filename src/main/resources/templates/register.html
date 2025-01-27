@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Account</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .register-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .register-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .form-group span {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+            display: block;
+        }
+
+        .gender-group {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .gender-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .register-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 1.5rem;
+        }
+
+        .register-button:hover {
+            background-color: #2980b9;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #7f8c8d;
+        }
+
+        .login-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2 class="register-title">Join Us Today</h2>
+        <form action="/register" method="POST" th:object="${user}">
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input th:field="*{firstname}" type="text" id="firstname" placeholder="Enter your first name" required>
+                <span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input th:field="*{lastname}" type="text" id="lastname" placeholder="Enter your last name" required>
+                <span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></span>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input th:field="*{username}" type="text" id="username" placeholder="Choose a username" required>
+                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input th:field="*{email}" type="email" id="email" placeholder="Enter your email" required>
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" th:field="*{mobile}" id="mobile" placeholder="Enter your mobile number" required>
+                <span th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input th:field="*{password}" type="password" id="password" placeholder="Create a strong password" required>
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+            <div class="form-group">
+                <label for="confirmpassword">Confirm Password</label>
+                <input th:field="*{confirmpassword}" type="password" id="confirmpassword" placeholder="Confirm your password" required>
+                <span th:if="${#fields.hasErrors('confirmpassword')}" th:errors="*{confirmpassword}"></span>
+            </div>
+            <div class="form-group">
+                <label>Gender</label>
+                <div class="gender-group">
+                    <label for="male">
+                        <input th:field="*{gender}" type="radio" id="male" value="male" required>
+                        Male
+                    </label>
+                    <label for="female">
+                        <input th:field="*{gender}" type="radio" id="female" value="female">
+                        Female
+                    </label>
+                    <label for="other">
+                        <input th:field="*{gender}" type="radio" id="other" value="other">
+                        Other
+                    </label>
+                </div>
+                <span th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+            </div>
+            <button type="submit" class="register-button">Create Account</button>
+        </form>
+        <div class="login-link">
+            <p>Already have an account? <a th:href="@{/login}">Sign in</a></p>
+        </div>
+    </div>
+</body>
+</html>
