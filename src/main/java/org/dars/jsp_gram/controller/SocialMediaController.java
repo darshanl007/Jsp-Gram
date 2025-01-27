@@ -7,8 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -28,7 +31,22 @@ public class SocialMediaController {
 	}
 
 	@PostMapping("/register")
-	public String register(@Valid User user, BindingResult result) {
-		return service.register(user, result);
+	public String register(@Valid User user, BindingResult result,HttpSession session) {
+		return service.register(user, result,session);
+	}
+
+	@GetMapping("/otp/{id}")
+	public String loadOtp(@PathVariable int id, ModelMap map) {
+		return service.loadOtp(id, map);
+	}
+
+	@PostMapping("/verify-otp")
+	public String verifyOtp(@RequestParam int otp, @RequestParam int id, HttpSession session) {
+		return service.verifyOtp(otp, id, session);
+	}
+
+	@GetMapping("/resend-otp/{id}")
+	public String resendOtp(@PathVariable int id, HttpSession session) {
+		return service.resendOtp(id, session);
 	}
 }

@@ -39,4 +39,5 @@ public class User {
 	@NotEmpty(message = "It is required Field")
 	private String gender;
 	private boolean verified;
+	private int otp;
 }
