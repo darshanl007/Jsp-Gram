@@ -20,7 +20,7 @@ public class SocialMediaController {
 	@Autowired
 	UserService service;
 
-	@GetMapping("/")
+	@GetMapping({ "/", "/login" })
 	public String loadLogin() {
 		return "login.html";
 	}
@@ -31,8 +31,8 @@ public class SocialMediaController {
 	}
 
 	@PostMapping("/register")
-	public String register(@Valid User user, BindingResult result,HttpSession session) {
-		return service.register(user, result,session);
+	public String register(@Valid User user, BindingResult result, HttpSession session) {
+		return service.register(user, result, session);
 	}
 
 	@GetMapping("/otp/{id}")
@@ -48,5 +48,20 @@ public class SocialMediaController {
 	@GetMapping("/resend-otp/{id}")
 	public String resendOtp(@PathVariable int id, HttpSession session) {
 		return service.resendOtp(id, session);
+	}
+
+	@PostMapping("/login")
+	public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
+		return service.login(username, password, session);
+	}
+
+	@GetMapping("/home")
+	public String loadHome(ModelMap map, HttpSession session) {
+		return service.loadHome(map, session);
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		return service.logout(session);
 	}
 }

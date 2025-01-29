@@ -87,4 +87,46 @@ public class UserService {
 		return "redirect:/otp/" + user.getId();
 	}
 
+	public String login(String username, String password, HttpSession session) {
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			session.setAttribute("fail", "Invalid Username");
+			return "redirect:/login";
+		} else {
+			if (AES.decrypt(user.getPassword()).equals(password)) {
+				if (user.isVerified()) {
+					session.setAttribute("user", user);
+					session.setAttribute("pass", "Login Success");
+					return "redirect:/home";
+				} else {
+					int otp = new Random().nextInt(100000, 1000000);
+					user.setOtp(otp);
+					System.err.println(otp);
+					emailSender.sendOtp(user.getEmail(), otp, user.getFirstname());
+					userRepository.save(user);
+					session.setAttribute("pass", "Otp Sent Success, First Verify Email to Login");
+					return "redirect:/otp/" + user.getId();
+				}
+			} else {
+				session.setAttribute("fail", "Incorrect Password");
+				return "redirect:/login";
+			}
+		}
+	}
+
+	public String loadHome(ModelMap map, HttpSession session) {
+		if (session.getAttribute("user") != null) {
+			return "home.html";
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again!!");
+			return "redirect:/login";
+		}
+	}
+
+	public String logout(HttpSession session) {
+		session.removeAttribute("user");
+		session.setAttribute("success", "Logout Success");
+		return "redirect:/login";
+	}
+
 }
